@@ -24,7 +24,7 @@ export function MenuBrowser({ menu, onAdd }: MenuBrowserProps) {
             aria-selected={c === active}
             onClick={() => setActive(c)}
             className={`min-h-11 shrink-0 rounded-full border px-4 text-sm font-medium ${
-              c === active ? "border-foreground bg-foreground text-background" : "border-foreground/25"
+              c === active ? "border-accent bg-accent text-accent-foreground" : "border-line"
             }`}
           >
             {c}
@@ -37,7 +37,7 @@ export function MenuBrowser({ menu, onAdd }: MenuBrowserProps) {
             <button
               onClick={() => onAdd(item)}
               disabled={!item.available}
-              className="flex min-h-24 w-full flex-col justify-between rounded-xl border border-foreground/20 p-3 text-left hover:bg-foreground/5 active:bg-foreground/10 disabled:opacity-40"
+              className="flex min-h-24 w-full flex-col justify-between rounded-2xl border border-line bg-surface p-3 shadow-sm text-left hover:bg-surface-2 active:bg-surface-2 disabled:opacity-40"
             >
               <span className="font-medium">{item.name}</span>
               <span className="text-sm opacity-70">{item.available ? formatMoney(item.price) : "Unavailable"}</span>

@@ -61,3 +61,18 @@ export interface KitchenOrder {
   createdAt: string;
   items: KitchenOrderItem[];
 }
+
+export interface BillLine {
+  name: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal: number;
+}
+
+/** Everything unpaid on one table. */
+export interface Bill {
+  lines: BillLine[];
+  total: number;
+  /** True while any of the table's orders is still NEW or PREPARING. */
+  kitchenPending: boolean;
+}

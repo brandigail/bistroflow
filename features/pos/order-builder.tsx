@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useReducer, useState } from "react";
 import { formatMoney } from "@/lib/format";
-import type { MenuItem, Table } from "@/types";
+import { BillPanel } from "@/features/billing/bill-panel";
+import type { Bill, MenuItem, Table } from "@/types";
 import { cartCount, cartReducer, cartTotal } from "./cart";
 import { CartPanel } from "./cart-panel";
 import { MenuBrowser } from "./menu-browser";
 
-export function OrderBuilder({ table, menu }: { table: Table; menu: MenuItem[] }) {
+export function OrderBuilder({ table, menu, bill }: { table: Table; menu: MenuItem[]; bill: Bill }) {
   const router = useRouter();
   const [lines, dispatch] = useReducer(cartReducer, []);
   const [sending, setSending] = useState(false);
@@ -46,13 +47,14 @@ export function OrderBuilder({ table, menu }: { table: Table; menu: MenuItem[] }
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 p-4 pb-24 sm:p-6 lg:pb-6">
       <header className="mb-4 flex items-center gap-3">
-        <Link href="/" className="flex min-h-11 items-center rounded-lg border border-foreground/25 px-3 text-sm">
+        <Link href="/" className="flex min-h-11 items-center rounded-lg border border-line px-3 text-sm">
           ← Tables
         </Link>
-        <h1 className="text-xl font-bold sm:text-2xl">
+        <h1 className="font-display text-2xl font-semibold sm:text-3xl">
           Table {table.label} <span className="text-sm font-normal opacity-60">· {table.seats} seats</span>
         </h1>
       </header>
+      {bill.lines.length > 0 && <BillPanel tableId={table.id} bill={bill} />}
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
         <MenuBrowser menu={menu} onAdd={(menuItem) => dispatch({ type: "add", menuItem, lineId: crypto.randomUUID() })} />
         <div className="lg:sticky lg:top-6 lg:self-start">
@@ -61,7 +63,7 @@ export function OrderBuilder({ table, menu }: { table: Table; menu: MenuItem[] }
       </div>
       <a
         href="#cart"
-        className="fixed inset-x-4 bottom-4 flex min-h-12 items-center justify-between rounded-xl bg-foreground px-4 font-semibold text-background shadow-lg lg:hidden"
+        className="fixed inset-x-4 bottom-4 flex min-h-12 items-center justify-between rounded-xl bg-accent px-4 font-semibold text-accent-foreground shadow-lg lg:hidden"
       >
         <span>
           {count} {count === 1 ? "item" : "items"}

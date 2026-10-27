@@ -25,9 +25,9 @@ export function TicketCard({ order, now, busy, onAdvance }: TicketCardProps) {
   const next = NEXT_STATUS[order.status];
 
   return (
-    <li className="rounded-xl border border-foreground/20 bg-background p-4 shadow-sm">
+    <li className="rounded-2xl border border-line bg-surface p-4 shadow-sm">
       <div className="mb-2 flex items-baseline justify-between">
-        <span className="text-2xl font-bold">{order.tableLabel}</span>
+        <span className="font-display text-2xl font-semibold">{order.tableLabel}</span>
         <span className={`text-sm font-medium tabular-nums ${ageStyle(minutes)}`}>{minutes} min</span>
       </div>
       <ul className="mb-3 space-y-1">
@@ -42,7 +42,7 @@ export function TicketCard({ order, now, busy, onAdvance }: TicketCardProps) {
         <button
           onClick={() => onAdvance(order)}
           disabled={busy}
-          className="min-h-12 w-full rounded-lg bg-foreground px-4 font-semibold text-background disabled:opacity-50"
+          className="min-h-12 w-full rounded-xl bg-accent px-4 font-semibold text-accent-foreground disabled:opacity-50"
         >
           {ACTION_LABEL[order.status]}
         </button>
