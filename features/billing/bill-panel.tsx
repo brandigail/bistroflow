@@ -40,7 +40,7 @@ export function BillPanel({ tableId, bill }: { tableId: string; bill: Bill }) {
       <button
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
-        className="mt-1 flex min-h-11 items-center gap-1 text-sm text-muted underline-offset-2 hover:underline"
+        className="btn-link mt-1"
       >
         {expanded ? "Hide" : "Show"} {itemCount} {itemCount === 1 ? "item" : "items"}
       </button>
@@ -68,7 +68,7 @@ export function BillPanel({ tableId, bill }: { tableId: string; bill: Bill }) {
       <button
         onClick={pay}
         disabled={bill.kitchenPending || paying}
-        className="min-h-12 w-full rounded-xl bg-accent px-4 font-semibold text-accent-foreground disabled:opacity-40"
+        className="btn btn-primary btn-lg w-full"
       >
         {paying ? "Processing…" : "Take payment"}
       </button>

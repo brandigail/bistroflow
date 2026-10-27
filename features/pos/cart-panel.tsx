@@ -4,7 +4,7 @@ import { useState, type Dispatch } from "react";
 import { formatMoney } from "@/lib/format";
 import { modifiersFor, toggleModifier, type CartAction, type CartLine } from "./cart";
 
-const ICON_BTN = "flex size-11 items-center justify-center rounded-lg border border-line text-lg";
+const ICON_BTN = "btn btn-outline size-11 p-0 text-lg";
 
 function CartLineRow({ line, dispatch }: { line: CartLine; dispatch: Dispatch<CartAction> }) {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,7 @@ function CartLineRow({ line, dispatch }: { line: CartLine; dispatch: Dispatch<Ca
         </button>
       </div>
       {line.notes && !open && <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">{line.notes}</p>}
-      <button className="mt-1 min-h-11 text-sm underline" aria-expanded={open} onClick={() => setOpen(!open)}>
+      <button className="btn-link mt-1" aria-expanded={open} onClick={() => setOpen(!open)}>
         {open ? "Done" : "Modifiers / notes"}
       </button>
       {open && (
@@ -47,9 +47,7 @@ function CartLineRow({ line, dispatch }: { line: CartLine; dispatch: Dispatch<Ca
                   key={m}
                   aria-pressed={on}
                   onClick={() => dispatch({ type: "setNotes", lineId: line.id, notes: toggleModifier(line.notes, m) })}
-                  className={`min-h-11 rounded-full border px-3 text-sm ${
-                    on ? "border-accent bg-accent text-accent-foreground" : "border-line"
-                  }`}
+                  className="chip"
                 >
                   {m}
                 </button>
@@ -105,14 +103,14 @@ export function CartPanel({ lines, total, dispatch, sending, error, onSend }: Ca
         <button
           onClick={() => dispatch({ type: "clear" })}
           disabled={lines.length === 0 || sending}
-          className="min-h-12 rounded-lg border border-line px-4 disabled:opacity-40"
+          className="btn btn-outline btn-lg"
         >
           Clear
         </button>
         <button
           onClick={onSend}
           disabled={lines.length === 0 || sending}
-          className="min-h-12 flex-1 rounded-xl bg-accent px-4 font-semibold text-accent-foreground disabled:opacity-40"
+          className="btn btn-primary btn-lg flex-1"
         >
           {sending ? "Sending…" : "Send to kitchen"}
         </button>

@@ -44,7 +44,7 @@ export function TicketCard({ order, now, busy, canAdvance, onAdvance }: TicketCa
         <button
           onClick={() => onAdvance(order)}
           disabled={busy}
-          className="min-h-12 w-full rounded-xl bg-accent px-4 font-semibold text-accent-foreground disabled:opacity-50"
+          className="btn btn-primary btn-lg w-full"
         >
           {ACTION_LABEL[order.status]}
         </button>

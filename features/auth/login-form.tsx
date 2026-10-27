@@ -25,7 +25,7 @@ export function LoginForm({ staff }: { staff: StaffMember[] }) {
         {staff.map((member) => (
           <label
             key={member.id}
-            className="flex min-h-16 cursor-pointer items-center gap-3 rounded-2xl border-2 border-line bg-surface p-4 has-[:checked]:border-accent has-[:checked]:bg-accent/10"
+            className="flex min-h-16 cursor-pointer items-center gap-3 transition-colors [&:not(:has(:checked))]:hover:border-accent/50 rounded-2xl border-2 border-line bg-surface p-4 has-[:checked]:border-accent has-[:checked]:bg-accent/10"
           >
             <input
               type="radio"
@@ -70,7 +70,7 @@ export function LoginForm({ staff }: { staff: StaffMember[] }) {
       <button
         type="submit"
         disabled={pending}
-        className="min-h-12 w-full rounded-xl bg-accent px-4 font-semibold text-accent-foreground disabled:opacity-50"
+        className="btn btn-primary btn-lg w-full"
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>

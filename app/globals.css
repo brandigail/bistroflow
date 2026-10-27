@@ -53,6 +53,121 @@ body {
   outline-offset: 2px;
 }
 
+/* Tailwind v4 resets buttons to cursor:default, so restore the affordances users expect. */
+@layer base {
+  button:not(:disabled),
+  [role="tab"],
+  summary {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* Shared interactive controls: every button, link-button and chip gets the same hover, press,
+   focus and disabled behaviour. Layout utilities (w-full, flex-1, size-11) still override. */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    user-select: none;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      box-shadow 0.15s,
+      filter 0.15s,
+      transform 0.1s;
+  }
+  .btn-lg {
+    min-height: 3rem;
+  }
+  .btn:not(:disabled):active {
+    transform: translateY(1px) scale(0.985);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+  }
+  .btn-primary:not(:disabled):hover {
+    filter: brightness(1.1);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.15),
+      0 6px 16px -6px var(--accent);
+  }
+
+  .btn-outline {
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  .btn-outline:not(:disabled):hover {
+    background: var(--surface-2);
+    border-color: color-mix(in srgb, var(--foreground) 35%, var(--line));
+  }
+
+  /* Text-style action, e.g. "Show 3 items". */
+  .btn-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.15s;
+  }
+  .btn-link:hover {
+    color: var(--foreground);
+  }
+
+  /* Pill toggle used for menu categories and modifiers. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      transform 0.1s;
+  }
+  .chip:hover {
+    background: var(--surface-2);
+    border-color: color-mix(in srgb, var(--foreground) 35%, var(--line));
+  }
+  .chip:active {
+    transform: scale(0.97);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-selected="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .chip[aria-pressed="true"]:hover,
+  .chip[aria-selected="true"]:hover {
+    filter: brightness(1.1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -52,7 +52,7 @@ export function OrderBuilder({ table, menu, bill }: { table: Table; menu: MenuIt
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 p-4 pb-24 sm:p-6 lg:pb-6">
       <header className="mb-4 flex items-center gap-3">
-        <Link href="/" className="flex min-h-11 items-center rounded-xl border border-line px-3 text-sm font-medium">
+        <Link href="/" className="btn btn-outline text-sm">
           ← Tables
         </Link>
         <h1 className="font-display text-2xl font-semibold sm:text-3xl">
@@ -87,7 +87,7 @@ export function OrderBuilder({ table, menu, bill }: { table: Table; menu: MenuIt
       {count > 0 && (
         <a
           href="#cart"
-          className="fixed inset-x-4 bottom-4 flex min-h-12 items-center justify-between rounded-xl bg-accent px-4 font-semibold text-accent-foreground shadow-lg lg:hidden"
+          className="btn btn-primary btn-lg fixed inset-x-4 bottom-4 justify-between shadow-lg lg:hidden"
         >
           <span>
             {count} {count === 1 ? "item" : "items"}

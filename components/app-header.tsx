@@ -20,13 +20,13 @@ async function SessionNav({ current }: { current: string }) {
   return (
     <nav aria-label="Main" className="flex flex-wrap items-center gap-2">
       {LINKS.filter((l) => l.href !== current && canAccessPath(role, l.href)).map((l) => (
-        <Link key={l.href} href={l.href} className="flex min-h-11 items-center rounded-xl border border-line px-4 text-sm font-semibold">
+        <Link key={l.href} href={l.href} className="btn btn-outline text-sm">
           {l.label}
         </Link>
       ))}
       <form action={logout} className="flex items-center gap-2">
         <span className="hidden text-sm text-muted sm:inline">{name}</span>
-        <button type="submit" className="min-h-11 rounded-xl bg-accent px-4 text-sm font-semibold text-accent-foreground">
+        <button type="submit" className="btn btn-primary text-sm">
           Sign out
         </button>
       </form>

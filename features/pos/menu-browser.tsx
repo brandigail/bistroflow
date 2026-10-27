@@ -35,9 +35,7 @@ export function MenuBrowser({ menu, quantities, onAdd }: MenuBrowserProps) {
               role="tab"
               aria-selected={c === active}
               onClick={() => setActive(c)}
-              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-medium ${
-                c === active ? "border-accent bg-accent text-accent-foreground" : "border-line bg-surface"
-              }`}
+              className="chip shrink-0"
             >
               {c}
               {inCart > 0 && (
@@ -57,7 +55,7 @@ export function MenuBrowser({ menu, quantities, onAdd }: MenuBrowserProps) {
               <button
                 onClick={() => onAdd(item)}
                 disabled={!item.available}
-                className={`relative flex min-h-28 w-full flex-col justify-between rounded-2xl border-2 bg-surface p-3 text-left shadow-sm transition-colors hover:bg-surface-2 active:scale-[0.98] disabled:opacity-40 ${
+                className={`relative flex min-h-28 w-full flex-col justify-between rounded-2xl border-2 bg-surface p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-surface-2 hover:shadow-md active:translate-y-0 active:scale-[0.98] disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-sm ${
                   qty > 0 ? "border-accent" : "border-line"
                 }`}
               >

@@ -24,7 +24,7 @@ export async function TableMap() {
           <li key={table.id}>
             <Link
               href={`/pos/${table.id}`}
-              className={`flex min-h-32 flex-col justify-between rounded-2xl border-2 p-4 shadow-sm transition-transform hover:-translate-y-0.5 ${state.card}`}
+              className={`flex min-h-32 flex-col justify-between rounded-2xl border-2 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 ${state.card}`}
             >
               <div className="flex items-start justify-between">
                 <span className="font-display text-3xl font-semibold">{table.label}</span>
