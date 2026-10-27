@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { placeOrderSchema, updateStatusSchema } from "./schemas";
+import { placeOrderSchema, receiveStockSchema, updateStatusSchema } from "./schemas";
 
 const TABLE = "4812fafa-8def-4fc9-b57f-8c686e84c0f9";
 const DISH = "239d64c7-0673-4dec-909b-a91a3669ad08";
@@ -26,5 +26,20 @@ describe("updateStatusSchema", () => {
   it("accepts known statuses only", () => {
     expect(updateStatusSchema.safeParse({ status: "READY" }).success).toBe(true);
     expect(updateStatusSchema.safeParse({ status: "COOKING" }).success).toBe(false);
+  });
+});
+
+describe("receiveStockSchema", () => {
+  it("accepts a delivery of positive quantities", () => {
+    expect(receiveStockSchema.safeParse({ items: [{ ingredientId: DISH, quantity: 2200.5 }] }).success).toBe(true);
+  });
+
+  it.each([
+    ["no lines", { items: [] }],
+    ["zero quantity", { items: [{ ingredientId: DISH, quantity: 0 }] }],
+    ["negative quantity (a delivery cannot remove stock)", { items: [{ ingredientId: DISH, quantity: -5 }] }],
+    ["bad ingredient id", { items: [{ ingredientId: "cream", quantity: 5 }] }],
+  ])("rejects %s", (_name, input) => {
+    expect(receiveStockSchema.safeParse(input).success).toBe(false);
   });
 });

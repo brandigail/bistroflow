@@ -17,4 +17,18 @@ export const placeOrderSchema = z.object({
 
 export const updateStatusSchema = z.object({ status: ticketStatusSchema });
 
+export const receiveStockSchema = z.object({
+  items: z
+    .array(
+      z.object({
+        ingredientId: z.string().uuid(),
+        // A delivery can only add stock; corrections would be a separate, audited action.
+        quantity: z.number().positive().max(1_000_000),
+      }),
+    )
+    .min(1)
+    .max(100),
+});
+
 export type PlaceOrderInput = z.infer<typeof placeOrderSchema>;
+export type ReceiveStockInput = z.infer<typeof receiveStockSchema>;

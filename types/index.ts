@@ -13,6 +13,8 @@ export interface MenuItem {
   /** Price in whole currency units (the DB stores cents). */
   price: number;
   available: boolean;
+  /** Portions the current stock can still make (null when the dish has no recipe). */
+  portionsLeft: number | null;
 }
 
 export interface Ingredient {

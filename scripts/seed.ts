@@ -16,10 +16,10 @@ const STOCK: Stock[] = [
   ["Lettuce", "g", 2000, 600], ["Tomato", "g", 3000, 800], ["Potatoes", "g", 9000, 3000],
   ["Chicken breast", "pcs", 30, 12], ["Pizza dough", "balls", 24, 10], ["Mozzarella", "g", 4000, 1200],
   ["Tomato sauce", "ml", 5000, 1500], ["Spaghetti", "g", 6000, 2000], ["Parmesan", "g", 1500, 500],
-  ["Romaine", "heads", 18, 8], ["Caesar dressing", "ml", 1500, 500], ["Chocolate", "g", 2500, 800],
-  // Cream and Lemons are seeded below their reorder level so the alerts have data.
-  ["Cream", "ml", 850, 1000], ["Coffee beans", "g", 3000, 1000], ["Milk", "ml", 12000, 4000],
-  ["Cola syrup", "ml", 8000, 2500], ["Lemons", "pcs", 12, 15],
+  ["Romaine", "heads", 0, 8], ["Caesar dressing", "ml", 1500, 500], ["Chocolate", "g", 2500, 800],
+  // Romaine (out), Cream and Lemons are seeded low so the sold-out badges and reorder list have data.
+  ["Cream", "ml", 550, 1000], ["Coffee beans", "g", 3000, 1000], ["Milk", "ml", 12000, 4000],
+  ["Cola syrup", "ml", 8000, 2500], ["Lemons", "pcs", 9, 15],
 ];
 
 const MENU: Dish[] = [

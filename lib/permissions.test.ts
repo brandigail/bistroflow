@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canAccessPath, canAdvanceTo, canTakeOrders, homeFor } from "./permissions";
+import { canAccessPath, canAdvanceTo, canManageInventory, canTakeOrders, homeFor } from "./permissions";
 
 describe("homeFor", () => {
   it("sends kitchen staff to the kitchen display and everyone else to the floor", () => {
@@ -31,6 +31,14 @@ describe("canTakeOrders", () => {
     expect(canTakeOrders("waiter")).toBe(true);
     expect(canTakeOrders("manager")).toBe(true);
     expect(canTakeOrders("kitchen")).toBe(false);
+  });
+});
+
+describe("canManageInventory", () => {
+  it("allows managers only", () => {
+    expect(canManageInventory("manager")).toBe(true);
+    expect(canManageInventory("waiter")).toBe(false);
+    expect(canManageInventory("kitchen")).toBe(false);
   });
 });
 

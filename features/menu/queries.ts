@@ -1,11 +1,27 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { menuItems, tables } from "@/db/schema";
+import { ingredients, menuItems, recipeLines, tables } from "@/db/schema";
 import type { MenuItem, Table } from "@/types";
+import { portionsFromRecipe, type RecipeStockLine } from "./portions";
 
 export async function getMenu(): Promise<MenuItem[]> {
-  const rows = await getDb().select().from(menuItems).orderBy(menuItems.category, menuItems.name);
-  return rows.map(({ priceCents, ...rest }) => ({ ...rest, price: priceCents / 100 }));
+  const db = getDb();
+  const [rows, recipe] = await Promise.all([
+    db.select().from(menuItems).orderBy(menuItems.category, menuItems.name),
+    db
+      .select({ menuItemId: recipeLines.menuItemId, quantity: recipeLines.quantity, stock: ingredients.stock })
+      .from(recipeLines)
+      .innerJoin(ingredients, eq(recipeLines.ingredientId, ingredients.id)),
+  ]);
+
+  const linesByDish = new Map<string, RecipeStockLine[]>();
+  for (const { menuItemId, ...line } of recipe) linesByDish.set(menuItemId, [...(linesByDish.get(menuItemId) ?? []), line]);
+
+  return rows.map(({ priceCents, ...rest }) => ({
+    ...rest,
+    price: priceCents / 100,
+    portionsLeft: portionsFromRecipe(linesByDish.get(rest.id) ?? []),
+  }));
 }
 
 export async function getTable(id: string): Promise<Table | null> {

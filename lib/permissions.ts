@@ -12,6 +12,10 @@ export function canAccessPath(role: StaffRole, pathname: string): boolean {
   return role !== "kitchen"; // floor and POS
 }
 
+export function canManageInventory(role: StaffRole): boolean {
+  return role === "manager";
+}
+
 export function canTakeOrders(role: StaffRole): boolean {
   return role === "waiter" || role === "manager";
 }

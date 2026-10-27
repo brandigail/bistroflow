@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { MenuItem } from "@/types";
 import { cartCount, cartReducer, cartTotal, modifiersFor, quantityByItem, toggleModifier, type CartLine } from "./cart";
 
-const burger: MenuItem = { id: "m1", name: "Classic Burger", category: "Mains", price: 14.95, available: true };
-const cola: MenuItem = { id: "m2", name: "Cola", category: "Drinks", price: 3.2, available: true };
+const burger: MenuItem = { id: "m1", name: "Classic Burger", category: "Mains", price: 14.95, available: true, portionsLeft: null };
+const cola: MenuItem = { id: "m2", name: "Cola", category: "Drinks", price: 3.2, available: true, portionsLeft: null };
 
 const add = (lines: CartLine[], menuItem: MenuItem, lineId: string) => cartReducer(lines, { type: "add", menuItem, lineId });
 

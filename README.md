@@ -11,23 +11,41 @@
   <img src="docs/screenshots/kitchen-dark.png" alt="Kitchen display in dark mode: New, Preparing and Ready columns" width="49%">
 </p>
 
+## Why BistroFlow exists
+
+A small restaurant usually runs on three things that don't talk to each other: orders shouted or scribbled to the kitchen, a till, and a stockroom nobody counts until a dish runs out mid-service. The result is slow tickets, wrong orders, and a guest hearing "sorry, we're out of that" *after* they've ordered, plus food waste from guessing what to buy.
+
+BistroFlow connects **order → kitchen → stock** in one loop, so the restaurant always knows what is being cooked, what is left, and what to buy before the shift runs dry.
+
+| Without it | With BistroFlow |
+|---|---|
+| Orders walk or shout to the kitchen | The ticket reaches the kitchen board in about 2 seconds, and the waiter sees when it is ready |
+| "We're out of that" after the guest orders | The menu shows **Only 3 left** or **Sold out** *before* the order is taken, because it is computed from live stock and recipes |
+| A stock count once a week, by gut | Every order deducts its ingredients automatically, in the same database transaction |
+| Reordering from memory | A **reorder list** with suggested quantities, the dishes each shortage affects, a copy-ready supplier order, and one tap to record the delivery |
+
 ## Demo it in 60 seconds
 
 1. **Sign in as Maya (Waiter, PIN 1111)**, open a free table, build an order with modifiers ("no onion"), and tap **Send to kitchen**.
 2. **Open a second window as Luca (Kitchen, PIN 2222).** The ticket appears within about 2 seconds with no refresh. Tap **Start preparing**, then **Mark ready**.
-3. **Back as Maya**, serve the ticket, then **Take payment**. The table frees up, and **Priya (Manager, PIN 3333)** can see the stock it consumed on the **Inventory** page, with reorder alerts.
+3. **Back as Maya**, serve the ticket, then **Take payment**. The table frees up.
+4. **Sign in as Priya (Manager, PIN 3333)** and open **Inventory**. The demo starts with Romaine out, so Caesar Salad shows **Sold out** on the order screen. Edit the suggested quantities, **Copy supplier order**, then **Receive delivery**: the alert clears and Caesar Salad can be ordered again.
 
 ## Features
 
 - **POS:** colour-coded table map, menu by course, order builder with per-category modifiers, live running total, and a mock payment flow that frees the table.
+- **Stock-aware menu:** each dish shows how many portions the current stock can still make (limited by its scarcest ingredient). Low dishes warn, sold-out dishes are disabled, and an order can't exceed what is left.
 - **Kitchen display (`/kds`):** tickets in New, Preparing and Ready columns that update live, with ticket ages that turn amber and red as they wait.
-- **Inventory:** recipes link every dish to its ingredients. Each order deducts stock transactionally, and ingredients at or below their reorder level raise an alert.
+- **Inventory and reordering:** recipes link every dish to its ingredients and each order deducts stock transactionally. Ingredients at or below their reorder level go on a **reorder list** that shows which dishes they affect, suggests an order quantity (editable), copies a supplier-ready order, and records the delivery in one tap.
 - **Roles:** waiter, kitchen and manager PIN logins with permissions enforced server-side.
 - **Polish:** light and dark themes, mobile-first layout checked from 375px to desktop, 44px touch targets, skip link, keyboard-visible focus, reduced-motion support.
 
 <p align="center">
   <img src="docs/screenshots/pos-light.png" alt="Order builder with modifiers" width="49%">
-  <img src="docs/screenshots/inventory-dark.png" alt="Inventory with reorder alerts" width="49%">
+  <img src="docs/screenshots/inventory-dark.png" alt="Inventory with an editable reorder list" width="49%">
+</p>
+<p align="center">
+  <img src="docs/screenshots/menu-stock-light.png" alt="Menu warning that only 5 portions are left" width="49%">
 </p>
 <p align="center">
   <img src="docs/screenshots/floor-phone-dark.png" alt="Floor on a phone" width="24%">
@@ -118,7 +136,7 @@ scripts/        seed script
 
 ## Phase 2
 
-Split bills · daily sales report with CSV export · purchase-order draft from low stock · persisted payments and price snapshots on order lines · SSE transport for the live hook · rate limiting on PIN attempts.
+Split bills · daily sales report with CSV export · persisted purchase orders with suppliers and delivery history · persisted payments and price snapshots on order lines · SSE transport for the live hook · rate limiting on PIN attempts.
 
 ## Status
 
