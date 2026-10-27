@@ -74,9 +74,12 @@ interface CartPanelProps {
   lines: CartLine[];
   total: number;
   dispatch: Dispatch<CartAction>;
+  sending: boolean;
+  error: string | null;
+  onSend: () => void;
 }
 
-export function CartPanel({ lines, total, dispatch }: CartPanelProps) {
+export function CartPanel({ lines, total, dispatch, sending, error, onSend }: CartPanelProps) {
   return (
     <section id="cart" aria-label="Current order" className="rounded-xl border border-foreground/20 p-4">
       <h2 className="mb-2 text-lg font-bold">Current order</h2>
@@ -93,17 +96,25 @@ export function CartPanel({ lines, total, dispatch }: CartPanelProps) {
         <span>Total</span>
         <span>{formatMoney(total)}</span>
       </div>
+      {error && (
+        <p role="alert" className="mt-3 rounded-lg bg-red-500/10 p-3 text-sm text-red-700 dark:text-red-300">
+          {error}
+        </p>
+      )}
       <div className="mt-3 flex gap-2">
         <button
           onClick={() => dispatch({ type: "clear" })}
-          disabled={lines.length === 0}
+          disabled={lines.length === 0 || sending}
           className="min-h-12 rounded-lg border border-foreground/25 px-4 disabled:opacity-40"
         >
           Clear
         </button>
-        {/* Enabled once the place-order API exists (step 7). */}
-        <button disabled className="min-h-12 flex-1 rounded-lg bg-foreground px-4 font-semibold text-background disabled:opacity-40">
-          Send to kitchen
+        <button
+          onClick={onSend}
+          disabled={lines.length === 0 || sending}
+          className="min-h-12 flex-1 rounded-lg bg-foreground px-4 font-semibold text-background disabled:opacity-40"
+        >
+          {sending ? "Sending…" : "Send to kitchen"}
         </button>
       </div>
     </section>

@@ -6,7 +6,7 @@
 - [x] 4. Seed script: menu, recipes, tables, sample orders
 - [x] 5. Table map UI
 - [x] 6. Menu browser and order builder with modifiers
-- [ ] 7. Place-order API with transactional inventory decrement
+- [x] 7. Place-order API with transactional inventory decrement
 - [ ] 8. `useLiveOrders` hook (polling/SSE)
 - [ ] 9. KDS board with status transitions
 - [ ] 10. Close/pay flow (mock) and table release
