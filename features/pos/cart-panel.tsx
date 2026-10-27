@@ -1,0 +1,111 @@
+"use client";
+
+import { useState, type Dispatch } from "react";
+import { formatMoney } from "@/lib/format";
+import { modifiersFor, toggleModifier, type CartAction, type CartLine } from "./cart";
+
+const ICON_BTN = "flex size-11 items-center justify-center rounded-lg border border-foreground/25 text-lg";
+
+function CartLineRow({ line, dispatch }: { line: CartLine; dispatch: Dispatch<CartAction> }) {
+  const [open, setOpen] = useState(false);
+  const modifiers = modifiersFor(line.menuItem.category);
+
+  return (
+    <li className="border-b border-foreground/10 py-3 last:border-0">
+      <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-medium">{line.menuItem.name}</p>
+          <p className="text-sm opacity-70">{formatMoney(line.menuItem.price * line.quantity)}</p>
+        </div>
+        <button
+          aria-label={`Remove one ${line.menuItem.name}`}
+          className={ICON_BTN}
+          onClick={() => dispatch({ type: "decrement", lineId: line.id })}
+        >
+          −
+        </button>
+        <span className="w-6 text-center tabular-nums">{line.quantity}</span>
+        <button
+          aria-label={`Add one ${line.menuItem.name}`}
+          className={ICON_BTN}
+          onClick={() => dispatch({ type: "increment", lineId: line.id })}
+        >
+          +
+        </button>
+      </div>
+      {line.notes && !open && <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">{line.notes}</p>}
+      <button className="mt-1 min-h-11 text-sm underline" aria-expanded={open} onClick={() => setOpen(!open)}>
+        {open ? "Done" : "Modifiers / notes"}
+      </button>
+      {open && (
+        <div className="space-y-2 pb-1">
+          <div className="flex flex-wrap gap-2">
+            {modifiers.map((m) => {
+              const on = line.notes.split(", ").includes(m);
+              return (
+                <button
+                  key={m}
+                  aria-pressed={on}
+                  onClick={() => dispatch({ type: "setNotes", lineId: line.id, notes: toggleModifier(line.notes, m) })}
+                  className={`min-h-11 rounded-full border px-3 text-sm ${
+                    on ? "border-foreground bg-foreground text-background" : "border-foreground/25"
+                  }`}
+                >
+                  {m}
+                </button>
+              );
+            })}
+          </div>
+          <input
+            aria-label={`Notes for ${line.menuItem.name}`}
+            value={line.notes}
+            maxLength={200}
+            placeholder="Custom note"
+            onChange={(e) => dispatch({ type: "setNotes", lineId: line.id, notes: e.target.value })}
+            className="min-h-11 w-full rounded-lg border border-foreground/25 bg-transparent px-3"
+          />
+        </div>
+      )}
+    </li>
+  );
+}
+
+interface CartPanelProps {
+  lines: CartLine[];
+  total: number;
+  dispatch: Dispatch<CartAction>;
+}
+
+export function CartPanel({ lines, total, dispatch }: CartPanelProps) {
+  return (
+    <section id="cart" aria-label="Current order" className="rounded-xl border border-foreground/20 p-4">
+      <h2 className="mb-2 text-lg font-bold">Current order</h2>
+      {lines.length === 0 ? (
+        <p className="py-6 text-center text-sm opacity-60">Tap menu items to start the order.</p>
+      ) : (
+        <ul>
+          {lines.map((l) => (
+            <CartLineRow key={l.id} line={l} dispatch={dispatch} />
+          ))}
+        </ul>
+      )}
+      <div className="mt-3 flex items-center justify-between border-t border-foreground/20 pt-3 text-lg font-bold">
+        <span>Total</span>
+        <span>{formatMoney(total)}</span>
+      </div>
+      <div className="mt-3 flex gap-2">
+        <button
+          onClick={() => dispatch({ type: "clear" })}
+          disabled={lines.length === 0}
+          className="min-h-12 rounded-lg border border-foreground/25 px-4 disabled:opacity-40"
+        >
+          Clear
+        </button>
+        {/* Enabled once the place-order API exists (step 7). */}
+        <button disabled className="min-h-12 flex-1 rounded-lg bg-foreground px-4 font-semibold text-background disabled:opacity-40">
+          Send to kitchen
+        </button>
+      </div>
+    </section>
+  );
+}

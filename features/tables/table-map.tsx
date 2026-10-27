@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { connection } from "next/server";
 import type { TicketStatus } from "@/types";
 import { getTablesWithState } from "./queries";
@@ -20,15 +21,17 @@ export async function TableMap() {
       {tables.map((table) => {
         const state = STATE_STYLES[table.orderStatus ?? "FREE"];
         return (
-          <li
-            key={table.id}
-            className={`flex min-h-28 flex-col justify-between rounded-xl border-2 p-4 ${state.classes}`}
-          >
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold">{table.label}</span>
-              <span className="text-sm opacity-80">{table.seats} seats</span>
-            </div>
-            <span className="text-sm font-medium">{state.label}</span>
+          <li key={table.id}>
+            <Link
+              href={`/pos/${table.id}`}
+              className={`flex min-h-28 flex-col justify-between rounded-xl border-2 p-4 ${state.classes}`}
+            >
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold">{table.label}</span>
+                <span className="text-sm opacity-80">{table.seats} seats</span>
+              </div>
+              <span className="text-sm font-medium">{state.label}</span>
+            </Link>
           </li>
         );
       })}
