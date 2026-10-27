@@ -12,7 +12,7 @@
 - [x] 10. Close/pay flow (mock) and table release
 - [x] 11. Inventory page with reorder alerts
 - [x] 12. Basic role gating (waiter / kitchen / manager)
-- [ ] 13. Responsive and touch-target pass for tablet and phone
+- [x] 13. Responsive and touch-target pass for tablet and phone
 - [ ] 14. Quality gate: `npm run build`, lint and `tsc --noEmit` all pass; no console errors; core flow tested at 375px and desktop
 - [ ] 15. README: pitch, features, stack, architecture notes, screenshot placeholders, run steps, 3-bullet "what to demo to a recruiter", Phase 2 list
 - [ ] 16. Deploy to Netlify, set env vars, verify the public URL end to end

@@ -43,6 +43,13 @@ export function cartCount(lines: CartLine[]): number {
   return lines.reduce((sum, l) => sum + l.quantity, 0);
 }
 
+/** Total quantity per menu item across all cart lines (a dish can have several lines with different notes). */
+export function quantityByItem(lines: CartLine[]): Record<string, number> {
+  const totals: Record<string, number> = {};
+  for (const l of lines) totals[l.menuItem.id] = (totals[l.menuItem.id] ?? 0) + l.quantity;
+  return totals;
+}
+
 const MODIFIERS: Record<string, string[]> = {
   Mains: ["No onion", "Extra cheese", "Well done", "Gluten free", "Allergy"],
   Starters: ["Dressing on side", "No croutons", "Allergy"],

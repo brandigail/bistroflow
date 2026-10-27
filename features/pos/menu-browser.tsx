@@ -4,46 +4,74 @@ import { useState } from "react";
 import { formatMoney } from "@/lib/format";
 import type { MenuItem } from "@/types";
 
+/** Courses in the order a guest orders them; unknown categories sort last. */
+const CATEGORY_ORDER = ["Starters", "Mains", "Sides", "Desserts", "Drinks"];
+
+function sortCategories(categories: string[]): string[] {
+  const rank = (c: string) => (CATEGORY_ORDER.includes(c) ? CATEGORY_ORDER.indexOf(c) : CATEGORY_ORDER.length);
+  return [...categories].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+}
+
 interface MenuBrowserProps {
   menu: MenuItem[];
+  /** Quantity of each menu item already in the cart, keyed by menu item id. */
+  quantities: Record<string, number>;
   onAdd: (item: MenuItem) => void;
 }
 
-export function MenuBrowser({ menu, onAdd }: MenuBrowserProps) {
-  const categories = [...new Set(menu.map((m) => m.category))];
-  const [active, setActive] = useState(categories[0] ?? "");
+export function MenuBrowser({ menu, quantities, onAdd }: MenuBrowserProps) {
+  const categories = sortCategories([...new Set(menu.map((m) => m.category))]);
+  const [active, setActive] = useState(categories.includes("Mains") ? "Mains" : (categories[0] ?? ""));
   const items = menu.filter((m) => m.category === active);
 
   return (
     <section aria-label="Menu">
-      <div role="tablist" className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
-        {categories.map((c) => (
-          <button
-            key={c}
-            role="tab"
-            aria-selected={c === active}
-            onClick={() => setActive(c)}
-            className={`min-h-11 shrink-0 rounded-full border px-4 text-sm font-medium ${
-              c === active ? "border-accent bg-accent text-accent-foreground" : "border-line"
-            }`}
-          >
-            {c}
-          </button>
-        ))}
+      <div role="tablist" aria-label="Menu categories" className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+        {categories.map((c) => {
+          const inCart = menu.filter((m) => m.category === c).reduce((sum, m) => sum + (quantities[m.id] ?? 0), 0);
+          return (
+            <button
+              key={c}
+              role="tab"
+              aria-selected={c === active}
+              onClick={() => setActive(c)}
+              className={`flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-medium ${
+                c === active ? "border-accent bg-accent text-accent-foreground" : "border-line bg-surface"
+              }`}
+            >
+              {c}
+              {inCart > 0 && (
+                <span className="rounded-full bg-background/25 px-1.5 text-xs tabular-nums" aria-label={`${inCart} in order`}>
+                  {inCart}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
       <ul className="grid grid-cols-2 gap-3 md:grid-cols-3">
-        {items.map((item) => (
-          <li key={item.id}>
-            <button
-              onClick={() => onAdd(item)}
-              disabled={!item.available}
-              className="flex min-h-24 w-full flex-col justify-between rounded-2xl border border-line bg-surface p-3 shadow-sm text-left hover:bg-surface-2 active:bg-surface-2 disabled:opacity-40"
-            >
-              <span className="font-medium">{item.name}</span>
-              <span className="text-sm opacity-70">{item.available ? formatMoney(item.price) : "Unavailable"}</span>
-            </button>
-          </li>
-        ))}
+        {items.map((item) => {
+          const qty = quantities[item.id] ?? 0;
+          return (
+            <li key={item.id}>
+              <button
+                onClick={() => onAdd(item)}
+                disabled={!item.available}
+                className={`relative flex min-h-28 w-full flex-col justify-between rounded-2xl border-2 bg-surface p-3 text-left shadow-sm transition-colors hover:bg-surface-2 active:scale-[0.98] disabled:opacity-40 ${
+                  qty > 0 ? "border-accent" : "border-line"
+                }`}
+              >
+                <span className="pr-8 font-medium leading-snug">{item.name}</span>
+                <span className="font-display text-lg font-semibold">{item.available ? formatMoney(item.price) : "Unavailable"}</span>
+                {qty > 0 && (
+                  <span className="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground tabular-nums">
+                    {qty}
+                  </span>
+                )}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

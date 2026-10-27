@@ -9,6 +9,9 @@ const LEVEL_STYLES: Record<StockLevel, { label: string; pill: string; bar: strin
 
 const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
 
+// Shared by the header and every row so the columns line up from tablet width up.
+const ROW_GRID = "grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 sm:grid-cols-[minmax(0,1.4fr)_1fr_1fr_9rem] sm:items-center";
+
 function Quantity({ item }: { item: InventoryRow }) {
   return (
     <span className="tabular-nums">
@@ -45,6 +48,28 @@ function AlertList({ items }: { items: InventoryRow[] }) {
   );
 }
 
+function StockRow({ item }: { item: InventoryRow }) {
+  const style = LEVEL_STYLES[item.level];
+  return (
+    <li className={`${ROW_GRID} px-4 py-3 text-sm`}>
+      <span className="truncate font-medium">{item.name}</span>
+      <span className="text-right sm:text-left">
+        <Quantity item={item} />
+      </span>
+      <span className="tabular-nums text-muted max-sm:hidden">
+        {number.format(item.reorderLevel)} {item.unit}
+      </span>
+      <div
+        role="img"
+        aria-label={`${style.label}: ${Math.round(item.fill * 100)}% of target`}
+        className="col-span-2 h-2 overflow-hidden rounded-full bg-surface-2 sm:col-span-1"
+      >
+        <div className={`h-full rounded-full ${style.bar}`} style={{ width: `${Math.max(item.fill * 100, 3)}%` }} />
+      </div>
+    </li>
+  );
+}
+
 export async function InventoryView() {
   await connection(); // live DB data: render at request time, never at build
   const items = await getInventory();
@@ -66,42 +91,18 @@ export async function InventoryView() {
         <h2 id="stock-heading" className="font-display mb-3 text-2xl font-semibold">
           All ingredients
         </h2>
-        <div className="overflow-x-auto rounded-2xl border border-line bg-surface shadow-sm">
-          <table className="w-full min-w-[32rem] text-left text-sm">
-            <thead className="border-b border-line text-muted">
-              <tr>
-                <th className="px-4 py-3 font-medium">Ingredient</th>
-                <th className="px-4 py-3 font-medium">Stock</th>
-                <th className="px-4 py-3 font-medium">Reorder at</th>
-                <th className="w-40 px-4 py-3 font-medium">Level</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {items.map((item) => {
-                const style = LEVEL_STYLES[item.level];
-                return (
-                  <tr key={item.id}>
-                    <td className="px-4 py-3 font-medium">{item.name}</td>
-                    <td className="px-4 py-3">
-                      <Quantity item={item} />
-                    </td>
-                    <td className="px-4 py-3 tabular-nums text-muted">
-                      {number.format(item.reorderLevel)} {item.unit}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div
-                        role="img"
-                        aria-label={`${style.label}: ${Math.round(item.fill * 100)}% of target`}
-                        className="h-2 overflow-hidden rounded-full bg-surface-2"
-                      >
-                        <div className={`h-full rounded-full ${style.bar}`} style={{ width: `${Math.max(item.fill * 100, 3)}%` }} />
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+          <div aria-hidden className={`${ROW_GRID} max-sm:hidden border-b border-line px-4 py-3 text-sm font-medium text-muted`}>
+            <span>Ingredient</span>
+            <span>Stock</span>
+            <span>Reorder at</span>
+            <span>Level</span>
+          </div>
+          <ul className="divide-y divide-line">
+            {items.map((item) => (
+              <StockRow key={item.id} item={item} />
+            ))}
+          </ul>
         </div>
       </section>
     </>
