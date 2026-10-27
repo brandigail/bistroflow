@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { StaffMember, StaffRole } from "@/types";
 import { login } from "./actions";
 
@@ -15,17 +15,26 @@ const DEMO_PINS: Record<StaffRole, string> = { waiter: "1111", kitchen: "2222", 
 
 export function LoginForm({ staff }: { staff: StaffMember[] }) {
   const [error, formAction, pending] = useActionState(login, null);
+  // Controlled so a failed attempt (React resets uncontrolled fields) keeps the chosen person.
+  const [selectedId, setSelectedId] = useState(staff[0]?.id ?? "");
 
   return (
     <form action={formAction} className="space-y-6">
       <fieldset className="space-y-3">
         <legend className="mb-1 text-sm font-medium text-muted">Who is signing in?</legend>
-        {staff.map((member, index) => (
+        {staff.map((member) => (
           <label
             key={member.id}
             className="flex min-h-16 cursor-pointer items-center gap-3 rounded-2xl border-2 border-line bg-surface p-4 has-[:checked]:border-accent has-[:checked]:bg-accent/10"
           >
-            <input type="radio" name="staffId" value={member.id} defaultChecked={index === 0} className="size-5 accent-[var(--accent)]" />
+            <input
+              type="radio"
+              name="staffId"
+              value={member.id}
+              checked={selectedId === member.id}
+              onChange={() => setSelectedId(member.id)}
+              className="size-5 accent-[var(--accent)]"
+            />
             <span className="flex-1">
               <span className="block font-semibold">{member.name}</span>
               <span className="block text-sm text-muted">{ROLE_BLURB[member.role]}</span>
