@@ -1,5 +1,7 @@
 # BistroFlow
 
+[![CI](https://github.com/brandigail/bistroflow/actions/workflows/ci.yml/badge.svg)](https://github.com/brandigail/bistroflow/actions/workflows/ci.yml)
+
 **A restaurant point-of-sale with a live kitchen display and ingredient-level inventory.** Waiters take orders on a table map, the kitchen works tickets on a live board, and every order deducts stock inside a single database transaction, so inventory never lies.
 
 > **Live demo:** TBD &nbsp;·&nbsp; **Sign in with any demo PIN** (see [Roles](#roles-and-demo-logins))
