@@ -4,7 +4,7 @@
 
 **The point of sale that knows your kitchen.** Waiters take orders on a table map, the kitchen works tickets on a live board, every order deducts stock inside a single database transaction, and managers get a reorder list and sales insights, so a restaurant knows what is cooking, what is left and what to buy before the shift runs dry.
 
-> **Live demo:** TBD &nbsp;·&nbsp; one click into any role, no sign-up (see [Roles](#roles-and-demo-logins))
+> **Live demo: [bistroflow-830.netlify.app](https://bistroflow-830.netlify.app)** &nbsp;·&nbsp; one click into any role, no sign-up (see [Roles](#roles-and-demo-logins))
 
 <p align="center">
   <img src="docs/screenshots/landing-light.png" alt="The BistroFlow landing page" width="100%">
@@ -152,4 +152,4 @@ Split bills · daily sales report with CSV export · persisted purchase orders w
 
 ## Status
 
-MVP and landing page complete. Deployed to Netlify; the public link goes here once visitor access is switched on.
+MVP, landing page and insights complete. Live on Netlify, with a green CI pipeline.
