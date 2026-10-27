@@ -8,7 +8,7 @@
 - [x] 6. Menu browser and order builder with modifiers
 - [x] 7. Place-order API with transactional inventory decrement
 - [x] 8. `useLiveOrders` hook (polling/SSE)
-- [ ] 9. KDS board with status transitions
+- [x] 9. KDS board with status transitions
 - [ ] 10. Close/pay flow (mock) and table release
 - [ ] 11. Inventory page with reorder alerts
 - [ ] 12. Basic role gating (waiter / kitchen / manager)
