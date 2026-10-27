@@ -15,7 +15,7 @@ async function KdsForRole() {
 
 export default function KdsPage() {
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6">
+    <main id="main" className="mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6">
       <AppHeader current="/kds" />
       <Suspense fallback={<p className="py-10 text-center text-muted">Loading…</p>}>
         <KdsForRole />

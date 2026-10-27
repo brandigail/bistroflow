@@ -17,7 +17,7 @@ async function TableOrder({ params }: { params: Promise<{ tableId: string }> }) 
 
 export default function PosPage({ params }: PageProps<"/pos/[tableId]">) {
   return (
-    <Suspense fallback={<main className="flex-1 p-6 text-muted">Loading…</main>}>
+    <Suspense fallback={<main id="main" className="flex-1 p-6 text-muted">Loading…</main>}>
       <TableOrder params={params} />
     </Suspense>
   );

@@ -50,7 +50,7 @@ export function OrderBuilder({ table, menu, bill }: { table: Table; menu: MenuIt
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl flex-1 p-4 pb-24 sm:p-6 lg:pb-6">
+    <main id="main" className="mx-auto w-full max-w-6xl flex-1 p-4 pb-24 sm:p-6 lg:pb-6">
       <header className="mb-4 flex items-center gap-3">
         <Link href="/" className="flex min-h-11 items-center rounded-xl border border-line px-3 text-sm font-medium">
           ← Tables
@@ -95,6 +95,6 @@ export function OrderBuilder({ table, menu, bill }: { table: Table; menu: MenuIt
           <span>View order · {formatMoney(total)}</span>
         </a>
       )}
-    </div>
+    </main>
   );
 }

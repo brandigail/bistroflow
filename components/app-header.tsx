@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { logout } from "@/features/auth/actions";
 import { canAccessPath } from "@/lib/permissions";
 import { BrandMark } from "./brand-mark";
+import { ThemeToggle } from "./theme-toggle";
 
 const LINKS = [
   { href: "/", label: "Floor" },
@@ -38,9 +39,12 @@ export function AppHeader({ current }: { current: string }) {
   return (
     <header className="mb-8 flex flex-wrap items-center justify-between gap-3">
       <BrandMark />
-      <Suspense fallback={null}>
-        <SessionNav current={current} />
-      </Suspense>
+      <div className="flex flex-wrap items-center gap-2">
+        <Suspense fallback={null}>
+          <SessionNav current={current} />
+        </Suspense>
+        <ThemeToggle />
+      </div>
     </header>
   );
 }
