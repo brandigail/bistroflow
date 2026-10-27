@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { requireAccess } from "@/lib/access";
 import type { TicketStatus } from "@/types";
 import { getTablesWithState } from "./queries";
 
@@ -14,6 +15,7 @@ const STATE_STYLES: Record<TicketStatus | "FREE", { label: string; dot: string; 
 
 export async function TableMap() {
   await connection(); // live DB data: render at request time, never at build
+  await requireAccess("/floor");
   const tables = await getTablesWithState();
 
   return (

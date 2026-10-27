@@ -1,5 +1,6 @@
 import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 import { connection } from "next/server";
+import { requireAccess } from "@/lib/access";
 import { formatMoney, formatWholeMoney } from "@/lib/format";
 import { BarChart, type Bar } from "./bar-chart";
 import { getInsights } from "./queries";
@@ -60,6 +61,7 @@ function Legend() {
 
 export async function InsightsView() {
   await connection(); // live DB data: render at request time, never at build
+  await requireAccess("/insights");
   const { daily, topDishes, hours } = await getInsights();
 
   const current = totalsFor(daily, "current");

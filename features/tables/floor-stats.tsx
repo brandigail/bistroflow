@@ -1,9 +1,11 @@
 import { connection } from "next/server";
+import { requireAccess } from "@/lib/access";
 import { formatMoney } from "@/lib/format";
 import { getFloorStats } from "./queries";
 
 export async function FloorStats() {
   await connection(); // live DB data: render at request time, never at build
+  await requireAccess("/floor");
   const stats = await getFloorStats();
 
   const cards = [

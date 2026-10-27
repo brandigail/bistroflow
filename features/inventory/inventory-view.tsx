@@ -1,4 +1,5 @@
 import { connection } from "next/server";
+import { requireAccess } from "@/lib/access";
 import { getInventory, type InventoryRow, type StockLevel } from "./queries";
 import { ReorderPanel } from "./reorder-panel";
 
@@ -45,6 +46,7 @@ function StockRow({ item }: { item: InventoryRow }) {
 
 export async function InventoryView() {
   await connection(); // live DB data: render at request time, never at build
+  await requireAccess("/inventory");
   const items = await getInventory();
   const alerts = items.filter((i) => i.level !== "OK");
 

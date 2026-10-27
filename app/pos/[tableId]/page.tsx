@@ -5,9 +5,11 @@ import { z } from "zod";
 import { getTableBill } from "@/features/billing/queries";
 import { getMenu, getTable } from "@/features/menu/queries";
 import { OrderBuilder } from "@/features/pos/order-builder";
+import { requireAccess } from "@/lib/access";
 
 async function TableOrder({ params }: { params: Promise<{ tableId: string }> }) {
   await connection();
+  await requireAccess("/pos");
   const { tableId } = await params;
   if (!z.string().uuid().safeParse(tableId).success) notFound();
   const [table, menu, bill] = await Promise.all([getTable(tableId), getMenu(), getTableBill(tableId)]);

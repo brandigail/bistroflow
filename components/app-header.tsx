@@ -1,5 +1,6 @@
 import { BarChart3, ChefHat, LayoutGrid, LogOut, Package, type LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { auth } from "@/auth";
 import { logout } from "@/features/auth/actions";
@@ -15,6 +16,7 @@ const LINKS: { href: string; label: string; icon: LucideIcon }[] = [
 ];
 
 async function SessionNav({ current }: { current: string }) {
+  await connection(); // depends on the visitor's cookies, so never prerendered
   const session = await auth();
   if (!session) return null;
   const { role, name } = session.user;

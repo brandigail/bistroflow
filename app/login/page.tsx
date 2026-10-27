@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { auth } from "@/auth";
 import { BrandMark } from "@/components/brand-mark";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getStaff } from "@/features/auth/queries";
 import { LoginForm } from "@/features/auth/login-form";
+import { homeFor } from "@/lib/permissions";
 
 export const metadata: Metadata = { title: "Sign in | BistroFlow" };
 
 async function StaffLogin() {
   await connection();
+  const session = await auth();
+  if (session) redirect(homeFor(session.user.role)); // already signed in
   return <LoginForm staff={await getStaff()} />;
 }
 

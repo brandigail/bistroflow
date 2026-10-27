@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
-import { auth } from "@/auth";
 import { AppHeader } from "@/components/app-header";
 import { KdsBoard } from "@/features/kds/kds-board";
+import { requireAccess } from "@/lib/access";
 
 export const metadata: Metadata = { title: "Kitchen | BistroFlow" };
 
 async function KdsForRole() {
-  const session = await auth();
-  if (!session) redirect("/login");
-  return <KdsBoard role={session.user.role} />;
+  await connection();
+  const user = await requireAccess("/kds");
+  return <KdsBoard role={user.role} />;
 }
 
 export default function KdsPage() {
