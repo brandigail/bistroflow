@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@neon/config": "^1.9.4",
@@ -26,7 +27,7 @@
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
+    "@types/node": "^22.20.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.11",
@@ -34,6 +35,7 @@
     "eslint-config-next": "16.4.3",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.5"
   }
 }
