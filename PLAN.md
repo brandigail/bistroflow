@@ -1,6 +1,6 @@
 # BistroFlow: Build Plan
 
-- [ ] 1. Scaffold the project (stack in `CLAUDE.md`), strict `tsconfig`, lint, `netlify.toml`, `.env.example`; first working commit
+- [x] 1. Scaffold the project (stack in `CLAUDE.md`), strict `tsconfig`, lint, `netlify.toml`, `.env.example`; first working commit
 - [ ] 2. Neon schema (tables, menu_items, ingredients, recipe_lines, orders, order_items) and migration
 - [ ] 3. `types/` interfaces and zod schemas
 - [ ] 4. Seed script: menu, recipes, tables, sample orders
