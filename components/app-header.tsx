@@ -1,3 +1,4 @@
+import { BarChart3, ChefHat, LayoutGrid, LogOut, Package, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { auth } from "@/auth";
@@ -6,10 +7,11 @@ import { canAccessPath } from "@/lib/permissions";
 import { BrandMark } from "./brand-mark";
 import { ThemeToggle } from "./theme-toggle";
 
-const LINKS = [
-  { href: "/", label: "Floor" },
-  { href: "/kds", label: "Kitchen" },
-  { href: "/inventory", label: "Inventory" },
+const LINKS: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: "/floor", label: "Floor", icon: LayoutGrid },
+  { href: "/kds", label: "Kitchen", icon: ChefHat },
+  { href: "/inventory", label: "Inventory", icon: Package },
+  { href: "/insights", label: "Insights", icon: BarChart3 },
 ];
 
 async function SessionNav({ current }: { current: string }) {
@@ -18,23 +20,32 @@ async function SessionNav({ current }: { current: string }) {
   const { role, name } = session.user;
 
   return (
-    <nav aria-label="Main" className="flex flex-wrap items-center gap-2">
-      {LINKS.filter((l) => l.href !== current && canAccessPath(role, l.href)).map((l) => (
-        <Link key={l.href} href={l.href} className="btn btn-outline text-sm">
-          {l.label}
-        </Link>
-      ))}
+    <>
+      <nav aria-label="Main" className="flex gap-1 rounded-2xl border border-line bg-surface p-1 shadow-sm">
+        {LINKS.filter((l) => canAccessPath(role, l.href)).map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            aria-current={href === current ? "page" : undefined}
+            className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-muted transition-colors hover:bg-surface-2 hover:text-foreground aria-[current=page]:bg-accent aria-[current=page]:text-accent-foreground aria-[current=page]:shadow-sm"
+          >
+            <Icon aria-hidden className="size-4" />
+            <span className="max-sm:sr-only">{label}</span>
+          </Link>
+        ))}
+      </nav>
       <form action={logout} className="flex items-center gap-2">
-        <span className="hidden text-sm text-muted sm:inline">{name}</span>
-        <button type="submit" className="btn btn-primary text-sm">
-          Sign out
+        <span className="hidden text-sm text-muted lg:inline">{name}</span>
+        <button type="submit" className="btn btn-outline text-sm" aria-label={`Sign out ${name}`}>
+          <LogOut aria-hidden className="size-4" />
+          <span className="max-sm:sr-only">Sign out</span>
         </button>
       </form>
-    </nav>
+    </>
   );
 }
 
-/** Brand + role-aware navigation. `current` hides the link to the page you are already on. */
+/** Brand + role-aware navigation. The current page is highlighted. */
 export function AppHeader({ current }: { current: string }) {
   return (
     <header className="mb-8 flex flex-wrap items-center justify-between gap-3">

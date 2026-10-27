@@ -176,3 +176,68 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Landing page */
+.bg-hero {
+  background:
+    radial-gradient(52rem 26rem at 88% -8%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 62%),
+    radial-gradient(34rem 22rem at -8% 8%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 62%),
+    linear-gradient(to right, color-mix(in srgb, var(--line) 38%, transparent) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(to bottom, color-mix(in srgb, var(--line) 38%, transparent) 1px, transparent 1px) 0 0 / 56px 56px;
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+/* The ticket status pill cycles New, Preparing, Ready; each pill is offset by 2s inside a 6s loop. */
+@keyframes status-cycle {
+  0%,
+  30% {
+    opacity: 1;
+  }
+  36%,
+  100% {
+    opacity: 0;
+  }
+}
+.status-cycle {
+  opacity: 0;
+  animation: status-cycle 6s infinite;
+}
+
+@keyframes drain {
+  from {
+    width: 72%;
+  }
+  to {
+    width: 14%;
+  }
+}
+.stock-drain {
+  width: 72%;
+  animation: drain 4s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

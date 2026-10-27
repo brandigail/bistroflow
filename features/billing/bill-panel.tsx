@@ -22,7 +22,7 @@ export function BillPanel({ tableId, bill }: { tableId: string; bill: Bill }) {
         setError(body.error ?? "Could not take payment.");
         return;
       }
-      router.push("/");
+      router.push("/floor");
     } catch {
       setError("Network error. Payment was not taken.");
     } finally {

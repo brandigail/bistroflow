@@ -1,23 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { canAccessPath, canAdvanceTo, canManageInventory, canTakeOrders, homeFor } from "./permissions";
+import { canAccessPath, canAdvanceTo, canManageInventory, canResetDemo, canTakeOrders, homeFor } from "./permissions";
 
 describe("homeFor", () => {
   it("sends kitchen staff to the kitchen display and everyone else to the floor", () => {
     expect(homeFor("kitchen")).toBe("/kds");
-    expect(homeFor("waiter")).toBe("/");
-    expect(homeFor("manager")).toBe("/");
+    expect(homeFor("waiter")).toBe("/floor");
+    expect(homeFor("manager")).toBe("/floor");
   });
 });
 
 describe("canAccessPath", () => {
-  it("restricts inventory to managers", () => {
+  it("restricts inventory and insights to managers", () => {
     expect(canAccessPath("manager", "/inventory")).toBe(true);
+    expect(canAccessPath("manager", "/insights")).toBe(true);
+    expect(canAccessPath("waiter", "/insights")).toBe(false);
+    expect(canAccessPath("kitchen", "/insights")).toBe(false);
     expect(canAccessPath("waiter", "/inventory")).toBe(false);
     expect(canAccessPath("kitchen", "/inventory")).toBe(false);
   });
 
   it("keeps kitchen staff off the floor and POS but lets everyone see the kitchen display", () => {
-    expect(canAccessPath("kitchen", "/")).toBe(false);
+    expect(canAccessPath("kitchen", "/floor")).toBe(false);
     expect(canAccessPath("kitchen", "/pos/abc")).toBe(false);
     expect(canAccessPath("waiter", "/pos/abc")).toBe(true);
     for (const role of ["waiter", "kitchen", "manager"] as const) {
@@ -39,6 +42,14 @@ describe("canManageInventory", () => {
     expect(canManageInventory("manager")).toBe(true);
     expect(canManageInventory("waiter")).toBe(false);
     expect(canManageInventory("kitchen")).toBe(false);
+  });
+});
+
+describe("canResetDemo", () => {
+  it("allows managers only", () => {
+    expect(canResetDemo("manager")).toBe(true);
+    expect(canResetDemo("waiter")).toBe(false);
+    expect(canResetDemo("kitchen")).toBe(false);
   });
 });
 

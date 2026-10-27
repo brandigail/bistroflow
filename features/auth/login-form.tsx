@@ -1,17 +1,11 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import type { StaffMember, StaffRole } from "@/types";
+import type { StaffMember } from "@/types";
 import { login } from "./actions";
+import { DEMO_STAFF } from "./demo-staff";
 
-const ROLE_BLURB: Record<StaffRole, string> = {
-  waiter: "Takes orders, settles bills",
-  kitchen: "Runs the kitchen display",
-  manager: "Everything, plus inventory",
-};
-
-// Demo-only hints so recruiters can try every role. Real PINs are only ever stored hashed.
-const DEMO_PINS: Record<StaffRole, string> = { waiter: "1111", kitchen: "2222", manager: "3333" };
+const demoFor = (member: StaffMember) => DEMO_STAFF.find((s) => s.id === member.id);
 
 export function LoginForm({ staff }: { staff: StaffMember[] }) {
   const [error, formAction, pending] = useActionState(login, null);
@@ -37,9 +31,9 @@ export function LoginForm({ staff }: { staff: StaffMember[] }) {
             />
             <span className="flex-1">
               <span className="block font-semibold">{member.name}</span>
-              <span className="block text-sm text-muted">{ROLE_BLURB[member.role]}</span>
+              <span className="block text-sm text-muted">{demoFor(member)?.blurb ?? member.role}</span>
             </span>
-            <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-xs text-muted">Demo PIN {DEMO_PINS[member.role]}</span>
+            <span className="rounded-full bg-surface-2 px-2.5 py-0.5 text-xs text-muted">Demo PIN {demoFor(member)?.pin}</span>
           </label>
         ))}
       </fieldset>

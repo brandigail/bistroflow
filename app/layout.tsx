@@ -13,9 +13,22 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
+const DESCRIPTION =
+  "A restaurant point-of-sale that connects the table, the kitchen and the stockroom: live kitchen tickets, a menu that knows its stock, and one-tap reordering.";
+
 export const metadata: Metadata = {
-  title: { default: "BistroFlow", template: "%s | BistroFlow" },
-  description: "Restaurant POS with a live kitchen display and ingredient-level inventory.",
+  // Netlify exposes the deployed site's address as URL at build time.
+  metadataBase: new URL(process.env.URL ?? "http://localhost:3000"),
+  title: { default: "BistroFlow: restaurant POS with a live kitchen display and smart inventory", template: "%s | BistroFlow" },
+  description: DESCRIPTION,
+  openGraph: {
+    title: "BistroFlow: the point of sale that knows your kitchen",
+    description: DESCRIPTION,
+    siteName: "BistroFlow",
+    type: "website",
+    images: [{ url: "/screens/kitchen.jpg", width: 1920, height: 1200, alt: "The BistroFlow kitchen display" }],
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

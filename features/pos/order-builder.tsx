@@ -52,7 +52,7 @@ export function OrderBuilder({ table, menu, bill }: { table: Table; menu: MenuIt
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 p-4 pb-24 sm:p-6 lg:pb-6">
       <header className="mb-4 flex items-center gap-3">
-        <Link href="/" className="btn btn-outline text-sm">
+        <Link href="/floor" className="btn btn-outline text-sm">
           ← Tables
         </Link>
         <h1 className="font-display text-2xl font-semibold sm:text-3xl">
