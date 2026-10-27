@@ -2,9 +2,9 @@
 
 - [x] 1. Scaffold the project (stack in `CLAUDE.md`), strict `tsconfig`, lint, `netlify.toml`, `.env.example`; first working commit
 - [x] 2. Neon schema (tables, menu_items, ingredients, recipe_lines, orders, order_items) and migration
-- [ ] 3. `types/` interfaces and zod schemas
-- [ ] 4. Seed script: menu, recipes, tables, sample orders
-- [ ] 5. Table map UI
+- [x] 3. `types/` interfaces and zod schemas
+- [x] 4. Seed script: menu, recipes, tables, sample orders
+- [x] 5. Table map UI
 - [ ] 6. Menu browser and order builder with modifiers
 - [ ] 7. Place-order API with transactional inventory decrement
 - [ ] 8. `useLiveOrders` hook (polling/SSE)
