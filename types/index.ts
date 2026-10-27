@@ -45,3 +45,19 @@ export interface Order {
   createdAt: string;
   items: OrderItem[];
 }
+
+/** An order as the kitchen display sees it: names resolved, no ids to join. */
+export interface KitchenOrderItem {
+  id: string;
+  name: string;
+  quantity: number;
+  notes: string;
+}
+
+export interface KitchenOrder {
+  id: string;
+  tableLabel: string;
+  status: TicketStatus;
+  createdAt: string;
+  items: KitchenOrderItem[];
+}

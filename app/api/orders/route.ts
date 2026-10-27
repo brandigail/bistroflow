@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
 import { OrderRejectedError, placeOrder } from "@/features/orders/place-order";
+import { getActiveOrders } from "@/features/orders/queries";
 import { placeOrderSchema } from "@/lib/schemas";
+
+export async function GET() {
+  try {
+    const orders = await getActiveOrders();
+    return NextResponse.json({ orders }, { headers: { "Cache-Control": "no-store" } });
+  } catch {
+    return NextResponse.json({ error: "Could not load orders" }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   const body: unknown = await request.json().catch(() => null);
