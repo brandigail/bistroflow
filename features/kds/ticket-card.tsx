@@ -17,10 +17,12 @@ interface TicketCardProps {
   order: KitchenOrder;
   now: number;
   busy: boolean;
+  /** Whether the signed-in role may move this ticket forward. */
+  canAdvance: boolean;
   onAdvance: (order: KitchenOrder) => void;
 }
 
-export function TicketCard({ order, now, busy, onAdvance }: TicketCardProps) {
+export function TicketCard({ order, now, busy, canAdvance, onAdvance }: TicketCardProps) {
   const minutes = Math.max(0, Math.floor((now - new Date(order.createdAt).getTime()) / 60_000));
   const next = NEXT_STATUS[order.status];
 
@@ -38,7 +40,7 @@ export function TicketCard({ order, now, busy, onAdvance }: TicketCardProps) {
           </li>
         ))}
       </ul>
-      {next && (
+      {next && canAdvance && (
         <button
           onClick={() => onAdvance(order)}
           disabled={busy}

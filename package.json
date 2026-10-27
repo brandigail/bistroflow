@@ -16,8 +16,10 @@
     "@neon/config": "^1.9.4",
     "@neon/env": "^1.6.5",
     "@neondatabase/serverless": "^1.2.0",
+    "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",
+    "next-auth": "^5.0.0-beta.32",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "^4.6.7"

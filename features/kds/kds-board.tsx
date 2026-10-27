@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { NEXT_STATUS } from "@/features/orders/transitions";
 import { useLiveOrders } from "@/features/orders/use-live-orders";
-import type { KitchenOrder, TicketStatus } from "@/types";
+import { canAdvanceTo } from "@/lib/permissions";
+import type { KitchenOrder, StaffRole, TicketStatus } from "@/types";
 import { TicketCard } from "./ticket-card";
 import { useNow } from "./use-now";
 
@@ -14,7 +14,7 @@ const COLUMNS: { status: TicketStatus; title: string; accent: string }[] = [
   { status: "READY", title: "Ready", accent: "border-violet-500" },
 ];
 
-export function KdsBoard() {
+export function KdsBoard({ role }: { role: StaffRole }) {
   const { orders, loading, error, refresh } = useLiveOrders();
   const now = useNow();
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -44,11 +44,8 @@ export function KdsBoard() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6">
+    <div>
       <header className="mb-4 flex flex-wrap items-center gap-3">
-        <Link href="/" className="flex min-h-11 items-center rounded-lg border border-line px-3 text-sm">
-          ← Floor
-        </Link>
         <h1 className="font-display text-2xl font-semibold sm:text-3xl">Kitchen</h1>
         <span className="ml-auto flex items-center gap-2 text-sm opacity-70">
           <span
@@ -80,7 +77,14 @@ export function KdsBoard() {
                 ) : (
                   <ul className="space-y-3">
                     {tickets.map((o) => (
-                      <TicketCard key={o.id} order={o} now={now} busy={busyId === o.id} onAdvance={advance} />
+                      <TicketCard
+                        key={o.id}
+                        order={o}
+                        now={now}
+                        busy={busyId === o.id}
+                        canAdvance={canAdvanceTo(role, NEXT_STATUS[o.status] ?? o.status)}
+                        onAdvance={advance}
+                      />
                     ))}
                   </ul>
                 )}
@@ -89,6 +93,6 @@ export function KdsBoard() {
           })}
         </div>
       )}
-    </main>
+    </div>
   );
 }

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { OrderRejectedError, placeOrder } from "@/features/orders/place-order";
 import { getActiveOrders } from "@/features/orders/queries";
+import { currentRole, forbidden, unauthorized } from "@/lib/api-auth";
+import { canTakeOrders } from "@/lib/permissions";
 import { placeOrderSchema } from "@/lib/schemas";
 
 export async function GET() {
+  if (!(await currentRole())) return unauthorized();
   try {
     const orders = await getActiveOrders();
     return NextResponse.json({ orders }, { headers: { "Cache-Control": "no-store" } });
@@ -13,6 +16,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const role = await currentRole();
+  if (!role) return unauthorized();
+  if (!canTakeOrders(role)) return forbidden();
+
   const body: unknown = await request.json().catch(() => null);
   const parsed = placeOrderSchema.safeParse(body);
   if (!parsed.success) {

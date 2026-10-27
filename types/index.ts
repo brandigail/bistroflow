@@ -76,3 +76,12 @@ export interface Bill {
   /** True while any of the table's orders is still NEW or PREPARING. */
   kitchenPending: boolean;
 }
+
+export type StaffRole = "waiter" | "kitchen" | "manager";
+
+/** A staff member as shown on the login screen (never includes the PIN hash). */
+export interface StaffMember {
+  id: string;
+  name: string;
+  role: StaffRole;
+}

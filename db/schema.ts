@@ -15,6 +15,15 @@ import {
 
 export const ticketStatus = pgEnum("ticket_status", ["NEW", "PREPARING", "READY", "SERVED", "PAID"]);
 
+export const staffRole = pgEnum("staff_role", ["waiter", "kitchen", "manager"]);
+
+export const staff = pgTable("staff", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull().unique(),
+  role: staffRole("role").notNull(),
+  pinHash: text("pin_hash").notNull(),
+});
+
 export const tables = pgTable("tables", {
   id: uuid("id").primaryKey().defaultRandom(),
   label: text("label").notNull().unique(),

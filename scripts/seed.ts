@@ -1,5 +1,6 @@
+import bcrypt from "bcryptjs";
 import { getDb } from "../db";
-import { ingredients, menuItems, orderItems, orders, recipeLines, tables } from "../db/schema";
+import { ingredients, menuItems, orderItems, orders, recipeLines, staff, tables } from "../db/schema";
 
 try {
   process.loadEnvFile(".env.local");
@@ -37,6 +38,13 @@ const MENU: Dish[] = [
   ["Fresh Lemonade", "Drinks", 390, [["Lemons", 2]]],
 ];
 
+// Demo logins, shown on the login screen and in the README. PINs are stored hashed.
+const STAFF: [name: string, role: "waiter" | "kitchen" | "manager", pin: string][] = [
+  ["Maya (Waiter)", "waiter", "1111"],
+  ["Luca (Kitchen)", "kitchen", "2222"],
+  ["Priya (Manager)", "manager", "3333"],
+];
+
 const TABLES: [label: string, seats: number, x: number, y: number][] = [
   ["T1", 2, 0, 0], ["T2", 2, 1, 0], ["T3", 4, 2, 0], ["T4", 4, 3, 0],
   ["T5", 4, 0, 1], ["T6", 6, 1, 1], ["T7", 4, 2, 1], ["T8", 2, 3, 1],
@@ -52,6 +60,11 @@ async function main() {
     await tx.delete(menuItems);
     await tx.delete(ingredients);
     await tx.delete(tables);
+    await tx.delete(staff);
+
+    await tx.insert(staff).values(
+      await Promise.all(STAFF.map(async ([name, role, pin]) => ({ name, role, pinHash: await bcrypt.hash(pin, 10) }))),
+    );
 
     const ing = await tx
       .insert(ingredients)
